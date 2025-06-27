@@ -77,8 +77,8 @@ Sob as seguintes condições:
 
 Que este player traga muitas horas de boa música e inspiração.
 
-![PrintScreen Dia](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_dia.jpg?raw=true)
-![PrintScreen Noite](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_noite.jpg?raw=true)
+![PrintScreen Dia](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_dia.png?raw=true)
+![PrintScreen Noite](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_noite.png?raw=true)
 
 ## Se quiser testar
 
