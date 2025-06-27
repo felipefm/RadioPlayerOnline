@@ -43,7 +43,49 @@ h1, h2 {
 }
 
 h1 {
-    justify-content: space-between; /* Para alinhar o botão de tema */
+    justify-content: space-between; /* Para alinhar os controles */
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#titleColorSelect {
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--input-border-color, #ccc);
+    background-color: var(--input-bg-color, #fff);
+    color: var(--input-text-color, #333);
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+/* Cores dos títulos */
+.title-color-blue {
+    --header-color: #0066cc;
+    --header-border-color: #4da6ff;
+}
+
+.title-color-green {
+    --header-color: #28a745;
+    --header-border-color: #6bcf7f;
+}
+
+.title-color-purple {
+    --header-color: #6f42c1;
+    --header-border-color: #a17ce8;
+}
+
+.title-color-red {
+    --header-color: #dc3545;
+    --header-border-color: #f1959b;
+}
+
+.title-color-orange {
+    --header-color: #fd7e14;
+    --header-border-color: #ffb366;
 }
 
 h1 .icon, h2 .icon {
@@ -176,6 +218,9 @@ button:disabled {
 .fav-btn.favorited { background-color: var(--button-favorited-bg, #f4a261); color: var(--button-favorited-text, white); }
 .fav-btn:hover { background-color: var(--button-fav-hover-bg, #d8b359); }
 
+.move-btn { background-color: var(--button-move-bg, #6c757d); color: var(--button-move-text, white); }
+.move-btn:hover { background-color: var(--button-move-hover-bg, #5a6268); }
+
 .remove-fav-btn { background-color: var(--button-remove-bg, #e76f51); }
 .remove-fav-btn:hover { background-color: var(--button-remove-hover-bg, #d15b3e); }
 
@@ -202,16 +247,76 @@ button:disabled {
 .volume-control {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Empurra para a direita em telas maiores */
+    gap: 8px;
+    margin-left: auto;
+    background-color: var(--card-bg-color, #fff);
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--input-border-color, #ccc);
+    transition: all 0.3s ease;
 }
 
-.volume-control label {
-    margin-right: 5px;
+.volume-control:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.volume-control button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    background-color: var(--button-primary-bg, #0077b6);
+    color: var(--button-primary-text, white);
+}
+
+.volume-control button:hover {
+    transform: scale(1.1);
 }
 
 .volume-control input[type="range"] {
-    width: 100px;
-    padding: 0; /* Remover padding padrão do range */
+    width: 80px;
+    height: 6px;
+    padding: 0;
+    background: var(--input-border-color, #ccc);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--button-primary-bg, #0077b6);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.volume-control input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--button-primary-bg, #0077b6);
+    cursor: pointer;
+    border: none;
+}
+
+#volumeDisplay {
+    font-size: 0.85em;
+    font-weight: bold;
+    color: var(--text-color, #333);
+    min-width: 35px;
+    text-align: center;
 }
 
 /* --- Toast Notification --- */
@@ -308,8 +413,9 @@ button:disabled {
 .toggle-icon {
     font-size: 0.8em;
     transition: transform 0.3s ease;
-    margin-left: auto; /* Garante que fique à direita */
-    padding-left: 10px;
+    display: inline-block; /* Garante que o transform funcione bem */
+    margin-left: auto; /* Empurra o ícone para a direita */
+    padding-left: 10px; /* Adiciona espaçamento à esquerda do ícone */
 }
 
 .toggle-content {
@@ -317,8 +423,11 @@ button:disabled {
     /* Animação pode ser adicionada aqui se desejado */
 }
 
-.toggle-content.hidden-section {
-    display: none;
+/* Aumentando a especificidade para garantir que hidden-section funcione */
+/* Esta é a principal correção para o problema da sanfona */
+.toggle-content.hidden-section,
+.station-list-items.hidden-section {
+    display: none !important; /* Adicionado !important para forçar a aplicação */
 }
 
 .toggle-header.expanded .toggle-icon {
@@ -334,6 +443,13 @@ button:disabled {
     padding: 0 5px;
     color: var(--header-color, #005f73);
     transition: color 0.3s ease;
+}
+
+/* Ajustes para tema escuro no seletor de cor */
+body.dark-theme #titleColorSelect {
+    background-color: var(--input-bg-color, #404040);
+    color: var(--input-text-color, #e0e0e0);
+    border-color: var(--input-border-color, #555);
 }
 
 /* --- Responsividade --- */
@@ -358,7 +474,15 @@ button:disabled {
 @media (max-width: 600px) {
     h1 {
         font-size: 1.6em;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
+    
+    .header-controls {
+        align-self: flex-end;
+    }
+    
     h2 {
         font-size: 1.2em;
     }
@@ -417,11 +541,18 @@ button:disabled {
         margin-left: 0;
         margin-top: 10px;
         justify-content: center;
+        padding: 10px 15px;
     }
 
     .volume-control input[type="range"] {
         flex-grow: 1;
-        max-width: 200px; /* Limita o tamanho */
+        max-width: 120px;
+    }
+    
+    .volume-control button {
+        width: 36px;
+        height: 36px;
+        font-size: 1em;
     }
 
     .favorites-actions {
@@ -447,6 +578,11 @@ button:disabled {
     }
     h1 {
         font-size: 1.4em;
+    }
+    
+    #titleColorSelect {
+        font-size: 0.8em;
+        padding: 4px 6px;
     }
     h2 {
         font-size: 1.1em;
@@ -506,6 +642,9 @@ body.dark-theme {
     --button-fav-hover-bg: #ec971f;
     --button-remove-bg: #d9534f; /* Vermelho */
     --button-remove-hover-bg: #c9302c;
+    --button-move-bg: #666;
+    --button-move-hover-bg: #555;
+    --button-move-text: #e0e0e0;
     --nowplaying-text-color: #66c0f4;
     --nowplaying-bg-color: #3a3a3a;
     --nowplaying-border-color: #505050;
@@ -532,26 +671,169 @@ body.dark-theme input[type="range"]::-moz-range-thumb {
     background: #66c0f4;
 }
 
+body.dark-theme .volume-control {
+    background-color: var(--card-bg-color, #333333);
+    border-color: var(--input-border-color, #555);
+}
+
+body.dark-theme .volume-control input[type="range"] {
+    background: var(--input-border-color, #555);
+}
+
+body.dark-theme .volume-control input[type="range"]::-webkit-slider-thumb {
+    background: var(--button-primary-bg, #4a90e2);
+}
+
+body.dark-theme .volume-control input[type="range"]::-moz-range-thumb {
+    background: var(--button-primary-bg, #4a90e2);
+}
+
+body.dark-theme .category-drag-handle:hover {
+    color: var(--header-color, #66c0f4);
+}
+
+body.dark-theme .favorite-category-header.dragging {
+    background-color: var(--dragging-bg-color, #454545);
+}
 
 
+
+
+/* --- Estilos dos Títulos de Categoria de Favoritos --- */
 
 .favorite-category-title {
     margin-top: 25px;
     margin-bottom: 10px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #dce4e8; /* Cor mais suave */
-    font-size: 1.3em; /* Um pouco maior */
-    color: #005f73; /* Mantendo a consistência da cor */
-    font-weight: 600; /* Um pouco mais de peso */
+    border-bottom: 1px solid var(--list-item-border-color, #f0f0f0);
+    font-size: 1.2em;
+    color: var(--header-color, #005f73);
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-/* Remove a margem superior do primeiro título de categoria para melhor espaçamento */
-.favorites-section .card > .favorite-category-title:first-of-type {
+/* Remove a margem superior do primeiro título para não criar espaço extra */
+#favoritesList > .favorite-category-title:first-of-type {
     margin-top: 5px;
 }
 
-/* Ajuste para o container de itens dentro de uma categoria, se necessário */
-.favorite-category-section .station-list-items .station-item {
-    /* Exemplo: se quiser um padding diferente para itens dentro de categorias */
-    /* padding-left: 15px; */
+/* Ajustes no tema escuro para o título da categoria */
+body.dark-theme .favorite-category-title {
+    border-bottom-color: var(--list-item-border-color, #444);
+}
+
+/* --- Estilos para Categoria de Favoritos Sanfonada (Accordion) --- */
+
+.favorite-category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    margin-top: 10px;
+    background-color: var(--card-bg-color, #fff);
+    border: 1px solid var(--card-border-color, #e0e0e0);
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.favorite-category-header[draggable="true"] {
+    cursor: move;
+}
+
+.category-drag-handle {
+    cursor: grab;
+    color: var(--drag-handle-color, #aaa);
+    font-size: 1em;
+    margin-right: 8px;
+    padding: 4px;
+    transition: color 0.3s ease;
+}
+
+.category-drag-handle:hover {
+    color: var(--header-color, #005f73);
+}
+
+.favorite-category-header.dragging {
+    opacity: 0.5;
+    background-color: var(--dragging-bg-color, #dcedff);
+}
+
+.favorite-category-header:hover {
+    background-color: var(--list-item-hover-bg, #e9f5ff);
+}
+
+/* Correção para o estilo do nome da categoria */
+.favorite-category-header .category-name {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--header-color, #005f73); /* Garante que a cor do cabeçalho seja aplicada */
+}
+
+/* Correção para o movimento da seta */
+.category-toggle-icon {
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+    display: inline-block; /* Garante que o transform funcione bem */
+    margin-left: auto; /* Empurra o ícone para a direita */
+    padding-left: 10px; /* Adiciona espaçamento à esquerda do ícone */
+    /* Adicionado para garantir que o ícone seja visível e tenha a cor correta */
+    color: var(--header-color, #005f73); /* Garante que a cor do ícone seja a do cabeçalho */
+}
+
+/* O container de estações já tem o estilo .hidden-section definido, então não precisamos recriá-lo */
+.station-list-items {
+    padding: 5px;
+    border: 1px solid var(--list-border-color, #eee);
+    border-top: none; /* Remove a borda de cima para se conectar melhor ao cabeçalho */
+    border-radius: 0 0 6px 6px;
+    margin-top: -1px; /* Puxa para baixo do cabeçalho */
+}
+
+/* Gira o ícone quando a seção está expandida */
+.favorite-category-header.expanded .category-toggle-icon {
+    transform: rotate(90deg);
+}
+
+/* Garantir que as cores dos títulos sejam aplicadas em todos os elementos relevantes */
+.title-color-blue h1, .title-color-blue h2, .title-color-blue .favorite-category-header .category-name, .title-color-blue .category-toggle-icon, .title-color-blue #themeToggleButton {
+    color: #0066cc;
+}
+
+.title-color-green h1, .title-color-green h2, .title-color-green .favorite-category-header .category-name, .title-color-green .category-toggle-icon, .title-color-green #themeToggleButton {
+    color: #28a745;
+}
+
+.title-color-purple h1, .title-color-purple h2, .title-color-purple .favorite-category-header .category-name, .title-color-purple .category-toggle-icon, .title-color-purple #themeToggleButton {
+    color: #6f42c1;
+}
+
+.title-color-red h1, .title-color-red h2, .title-color-red .favorite-category-header .category-name, .title-color-red .category-toggle-icon, .title-color-red #themeToggleButton {
+    color: #dc3545;
+}
+
+.title-color-orange h1, .title-color-orange h2, .title-color-orange .favorite-category-header .category-name, .title-color-orange .category-toggle-icon, .title-color-orange #themeToggleButton {
+    color: #fd7e14;
+}
+
+/* Aplicar cores das bordas dos títulos */
+.title-color-blue h1, .title-color-blue h2 {
+    border-bottom-color: #4da6ff;
+}
+
+.title-color-green h1, .title-color-green h2 {
+    border-bottom-color: #6bcf7f;
+}
+
+.title-color-purple h1, .title-color-purple h2 {
+    border-bottom-color: #a17ce8;
+}
+
+.title-color-red h1, .title-color-red h2 {
+    border-bottom-color: #f1959b;
+}
+
+.title-color-orange h1, .title-color-orange h2 {
+    border-bottom-color: #ffb366;
 }

@@ -13,7 +13,19 @@
     
 
     <div class="container">
-        <h1>Rádio Player 📻 <button id="themeToggleButton" title="Alternar Tema">🌙</button></h1>
+        <h1>Rádio Player 📻 
+            <div class="header-controls">
+                <select id="titleColorSelect" title="Cor dos Títulos">
+                    <option value="default">🎨 Padrão</option>
+                    <option value="blue">🔵 Azul</option>
+                    <option value="green">🟢 Verde</option>
+                    <option value="purple">🟣 Roxo</option>
+                    <option value="red">🔴 Vermelho</option>
+                    <option value="orange">🟠 Laranja</option>
+                </select>
+                <button id="themeToggleButton" title="Alternar Tema">🌙</button>
+            </div>
+        </h1>
 
         <div class="search-section card">
             <h2><span class="icon">🔍</span> Buscar Estações</h2>
@@ -50,8 +62,11 @@
                 <button id="playButton" disabled>▶️ Play</button>
                 <button id="stopButton" disabled>⏹️ Stop</button>
                 <div class="volume-control">
-                    <label for="volumeControl"><span class="icon">🔊</span> Volume:</label>
-                    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+                    <button id="muteButton" title="Silenciar/Ativar Som">🔊</button>
+                    <button id="volumeDown" title="Diminuir Volume">-</button>
+                    <input type="range" id="volumeControl" min="0" max="1" step="0.05" value="1">
+                    <button id="volumeUp" title="Aumentar Volume">+</button>
+                    <span id="volumeDisplay">100%</span>
                 </div>
             </div>
         </div>
