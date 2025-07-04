@@ -52,6 +52,28 @@ h1 {
     gap: 10px;
 }
 
+.github-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.github-link:hover {
+    transform: scale(1.1);
+}
+
+.github-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    transition: opacity 0.2s ease;
+}
+
+.github-icon:hover {
+    opacity: 0.8;
+}
+
 #titleColorSelect {
     padding: 5px 8px;
     border-radius: 4px;
@@ -483,6 +505,11 @@ body.dark-theme #titleColorSelect {
         align-self: flex-end;
     }
     
+    .github-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
     h2 {
         font-size: 1.2em;
     }
@@ -694,6 +721,172 @@ body.dark-theme .category-drag-handle:hover {
 
 body.dark-theme .favorite-category-header.dragging {
     background-color: var(--dragging-bg-color, #454545);
+}
+
+/* --- Estilos da Seção de Estatísticas --- */
+.analytics-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.analytics-tab {
+    padding: 8px 16px;
+    border: 1px solid var(--input-border-color, #ccc);
+    background-color: var(--card-bg-color, #fff);
+    color: var(--text-color, #333);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.analytics-tab.active {
+    background-color: var(--button-primary-bg, #0077b6);
+    color: var(--button-primary-text, white);
+    border-color: var(--button-primary-bg, #0077b6);
+}
+
+.analytics-results {
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--list-border-color, #eee);
+    border-radius: 5px;
+    padding: 10px;
+    background-color: var(--list-bg-color, #fff);
+    margin-bottom: 15px;
+}
+
+.analytics-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--list-item-border-color, #f0f0f0);
+}
+
+.analytics-item:last-child {
+    border-bottom: none;
+}
+
+.analytics-station-info {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.analytics-station-name {
+    font-weight: bold;
+    color: var(--list-item-name-color, #023047);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.analytics-stats {
+    font-size: 0.9em;
+    color: var(--list-item-details-color, #666);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.analytics-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--list-border-color, #eee);
+}
+
+.analytics-actions button {
+    background-color: var(--button-secondary-bg, #6c757d);
+    color: var(--button-secondary-text, white);
+}
+
+.analytics-actions button:hover {
+    background-color: var(--button-secondary-hover-bg, #5a6268);
+}
+
+@media (max-width: 600px) {
+    .analytics-tabs {
+        flex-direction: column;
+    }
+    
+    .analytics-actions {
+        flex-direction: column;
+    }
+}
+
+/* --- Estilos da Seção Sobre --- */
+.about-content {
+    line-height: 1.6;
+}
+
+.about-content h3 {
+    color: var(--header-color, #005f73);
+    margin-top: 0;
+    margin-bottom: 10px;
+    border: none;
+    padding: 0;
+    font-size: 1.3em;
+}
+
+.about-content h4 {
+    color: var(--header-color, #005f73);
+    margin-top: 15px;
+    margin-bottom: 8px;
+    border: none;
+    padding: 0;
+    font-size: 1.1em;
+}
+
+.about-content ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.about-content li {
+    margin-bottom: 5px;
+    color: var(--text-color, #333);
+}
+
+.about-content p {
+    margin: 10px 0;
+    color: var(--text-color, #333);
+}
+
+.about-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--list-border-color, #eee);
+    text-align: center;
+}
+
+.github-profile-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: var(--button-primary-bg, #0077b6);
+    color: var(--button-primary-text, white);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 500;
+}
+
+.github-profile-link:hover {
+    background-color: var(--button-primary-hover-bg, #005f8e);
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+/* Tema escuro para ícone do GitHub */
+body.dark-theme .github-icon {
+    filter: invert(1) brightness(0.9);
+}
+
+/* Tema escuro para seção sobre */
+body.dark-theme .about-footer {
+    border-top-color: var(--list-border-color, #484848);
 }
 
 

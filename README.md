@@ -38,6 +38,14 @@ Este player é mais do que um conjunto de códigos; é uma janela para as ondas 
 - **Memória de volume**: Lembra o último volume antes de mutar
 - **Interface touch-friendly**: Botões otimizados para dispositivos móveis
 
+### 📊 Estatísticas de Uso (NOVO!)
+- **RadioAnalytics**: Sistema completo de análise de uso das rádios
+- **Contagem de clicks**: Veja quantas vezes cada rádio foi tocada
+- **Tempo de escuta**: Monitore o tempo real de escuta por estação
+- **Rankings**: Top rádios mais ouvidas por clicks e tempo
+- **Exportação de dados**: Exporte suas estatísticas em formato JSON
+- **Armazenamento local**: Dados salvos no navegador usando IndexedDB
+
 ### 🔄 Gerenciamento Avançado
 - **Mover entre categorias**: Botão dedicado para mover rádios facilmente
 - **Exportar/Importar**: Backup completo das suas configurações e favoritos
@@ -75,10 +83,24 @@ Sob as seguintes condições:
 * **Atribuição**: Você deve dar o crédito apropriado, fornecer um link para a licença e indicar se foram feitas alterações.
 * **Não Comercial**: Você não pode usar o material para fins comerciais.
 
+## 🚀 Próximas Melhorias Planejadas
+
+### Em Desenvolvimento
+- **🎼 Exibição do nome da música**: Mostrar informações da faixa atual quando disponível
+- **⚙️ Menu de Configurações**: Reorganizar funcionalidades em um menu dedicado para interface mais limpa
+- **📱 Correção Mobile**: Melhorar ordenação de categorias em dispositivos móveis
+- **🖱️ Usabilidade Aprimorada**: Permitir tocar rádio clicando em qualquer área do nome
+- **🎙️ Agregador de Podcasts**: Possível integração com podcasts populares
+
+### Melhorias Técnicas
+- **☁️ Sincronização Opcional**: Sistema híbrido para sincronizar estatísticas entre dispositivos
+- **🔄 Modo Offline Avançado**: Melhor cache de estações favoritas
+- **📈 Analytics Expandido**: Gráficos e relatórios mais detalhados
+
 Que este player traga muitas horas de boa música e inspiração.
 
-![PrintScreen Dia](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_dia.png?raw=true)
-![PrintScreen Noite](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_noite.png?raw=true)
+![PrintScreen Dia](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_dia.jpg?raw=true)
+![PrintScreen Noite](https://github.com/felipefm/RadioPlayerOnline/blob/main/printscreen/screen_noite.jpg?raw=true)
 
 ## Se quiser testar
 

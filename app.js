@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggleHeaders = document.querySelectorAll(".toggle-header");
     const themeToggleButton = document.getElementById("themeToggleButton");
     const titleColorSelect = document.getElementById("titleColorSelect");
+    const clicksTab = document.getElementById("clicksTab");
+    const timeTab = document.getElementById("timeTab");
+    const analyticsResults = document.getElementById("analyticsResults");
+    const exportAnalyticsButton = document.getElementById("exportAnalyticsButton");
+    const clearAnalyticsButton = document.getElementById("clearAnalyticsButton");
 
     // --- Variáveis de Estado e Configuração ---
     let toastTimeout;
@@ -82,6 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         stopStream();
+        
+        // RadioAnalytics: Registrar click
+        if (window.radioAnalytics) {
+            window.radioAnalytics.recordClick(station);
+        }
 
         const streamUrl = station.url_resolved;
         nowPlayingDiv.textContent = `Carregando: ${station.name}...`;
@@ -100,6 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
                             currentStation = station;
                             updatePlayerControls(true, station.name);
                             document.title = `▶ ${station.name} - Rádio Player`;
+                            
+                            // RadioAnalytics: Iniciar sessão
+                            if (window.radioAnalytics) {
+                                window.radioAnalytics.startListeningSession(station);
+                            }
                         })
                         .catch(error => handlePlayError(station, error));
                 });
@@ -130,6 +145,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     currentStation = station;
                     updatePlayerControls(true, station.name);
                     document.title = `▶ ${station.name} - Rádio Player`;
+                    
+                    // RadioAnalytics: Iniciar sessão
+                    if (window.radioAnalytics) {
+                        window.radioAnalytics.startListeningSession(station);
+                    }
                 })
                 .catch(error => handlePlayError(station, error));
         }
@@ -150,6 +170,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function stopStream() {
+        // RadioAnalytics: Finalizar sessão
+        if (window.radioAnalytics) {
+            window.radioAnalytics.endListeningSession();
+        }
+        
         audioPlayer.pause();
         if (currentHlsInstance) {
             currentHlsInstance.destroy();
@@ -1004,6 +1029,110 @@ document.addEventListener("DOMContentLoaded", () => {
     if (themeToggleButton) themeToggleButton.addEventListener("click", toggleTheme);
     if (titleColorSelect) titleColorSelect.addEventListener("change", changeTitleColor);
 
+    // --- Funções de Estatísticas ---
+    async function showAnalytics(type = 'clicks') {
+        if (!window.radioAnalytics) {
+            analyticsResults.innerHTML = '<p>Módulo de estatísticas não disponível.</p>';
+            return;
+        }
+        
+        try {
+            const data = type === 'clicks' ? 
+                await window.radioAnalytics.getTopByClicks(10) : 
+                await window.radioAnalytics.getTopByTime(10);
+            
+            if (data.length === 0) {
+                analyticsResults.innerHTML = '<p>Nenhum dado disponível ainda.</p>';
+                return;
+            }
+            
+            analyticsResults.innerHTML = data.map(station => `
+                <div class="analytics-item">
+                    <div class="analytics-station-info">
+                        <div class="analytics-station-name">${station.name}</div>
+                    </div>
+                    <div class="analytics-stats">
+                        ${type === 'clicks' ? 
+                            `${station.clicks} clicks` : 
+                            window.radioAnalytics.formatTime(station.totalTime)
+                        }
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Erro ao carregar estatísticas:', error);
+            analyticsResults.innerHTML = '<p>Erro ao carregar estatísticas.</p>';
+        }
+    }
+    
+    async function exportAnalytics() {
+        if (!window.radioAnalytics) {
+            showToast('Módulo de estatísticas não disponível.', 3000);
+            return;
+        }
+        
+        try {
+            const data = await window.radioAnalytics.exportData();
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'radio_analytics.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Estatísticas exportadas!', 2000);
+        } catch (error) {
+            console.error('Erro ao exportar estatísticas:', error);
+            showToast('Erro ao exportar estatísticas.', 3000);
+        }
+    }
+    
+    async function clearAnalytics() {
+        if (!window.radioAnalytics) {
+            showToast('Módulo de estatísticas não disponível.', 3000);
+            return;
+        }
+        
+        if (confirm('Tem certeza que deseja limpar todas as estatísticas?')) {
+            try {
+                await window.radioAnalytics.clearAllData();
+                showAnalytics(clicksTab.classList.contains('active') ? 'clicks' : 'time');
+                showToast('Estatísticas limpas!', 2000);
+            } catch (error) {
+                console.error('Erro ao limpar estatísticas:', error);
+                showToast('Erro ao limpar estatísticas.', 3000);
+            }
+        }
+    }
+    
+    // Event listeners para estatísticas
+    if (clicksTab) {
+        clicksTab.addEventListener('click', () => {
+            clicksTab.classList.add('active');
+            timeTab.classList.remove('active');
+            showAnalytics('clicks');
+        });
+    }
+    
+    if (timeTab) {
+        timeTab.addEventListener('click', () => {
+            timeTab.classList.add('active');
+            clicksTab.classList.remove('active');
+            showAnalytics('time');
+        });
+    }
+    
+    if (exportAnalyticsButton) {
+        exportAnalyticsButton.addEventListener('click', exportAnalytics);
+    }
+    
+    if (clearAnalyticsButton) {
+        clearAnalyticsButton.addEventListener('click', clearAnalytics);
+    }
+
     // --- Inicialização da Aplicação ---
     initializeTheme();
     initializeTitleColor();
@@ -1013,5 +1142,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setupToggleSections();
     registerServiceWorker();
     setupInstallPrompt();
+    
+    // Carregar estatísticas iniciais
+    setTimeout(() => {
+        if (window.radioAnalytics && clicksTab) {
+            showAnalytics('clicks');
+        }
+    }, 1000);
 
 });

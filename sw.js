@@ -1,4 +1,4 @@
-const CACHE_NAME = 'radio-player-cache-v2.01'; // Incremente a versão ao atualizar arquivos
+const CACHE_NAME = 'radio-player-cache-v2.03'; // Incremente a versão ao atualizar arquivos
 const urlsToCache = [
     '/',
     '/index.html',
